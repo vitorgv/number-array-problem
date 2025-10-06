@@ -9,6 +9,11 @@ import java.util.stream.Collectors;
  */
 public class NumberArrayProcessor {
 
+    /**
+     * Main method to run the number array processing demonstration.
+     *
+     * @param args command line arguments (not used)
+     */
     public static void main(String[] args) {
         NumberArrayProcessor processor = new NumberArrayProcessor();
 
@@ -24,10 +29,18 @@ public class NumberArrayProcessor {
     /**
      * Processes the input array to count occurrences of each element
      * and displays the results sorted by key.
-     * 
+     *
      * @param numbers the array of integers to process
      */
     public void run(int[] numbers) {
-        Arrays.stream(numbers).boxed().collect(Collectors.groupingBy(Function.identity(), Collectors.counting())).entrySet().stream().sorted(Map.Entry.comparingByKey()).forEach(e -> System.out.println("Number " + e.getKey() + " appears " + e.getValue() + " time(s)"));
+        // Convert array to stream, group by element value, count occurrences,
+        // sort by key, print results
+        Arrays.stream(numbers) // Create stream from array
+                .boxed() // Convert int to Integer for collections
+                .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+                .entrySet().stream() // Convert map to stream of entries
+                .sorted(Map.Entry.comparingByKey()) // Sort by number (key)
+                .forEach(e -> System.out.println("Number " + e.getKey()
+                        + " appears " + e.getValue() + " time(s)"));
     }
 }

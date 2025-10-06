@@ -33,16 +33,18 @@ public class NumberArrayProcessor {
      * @param numbers the array of integers to process
      */
     public void run(int[] numbers) {
-        // Convert array to stream, group by element value, count occurrences,
-        // sort by key, print results
-        Arrays.stream(numbers) // Create stream from array
-                .boxed() // Convert int to Integer for collections
-                // Group elements by their value (Function.identity()) and count occurrences in
-                // each group
-                // Result: Map<Integer, Long> where key=number, value=count
+        // Stream pipeline: Transform array → group & count → sort → display
+
+        Arrays.stream(numbers) // Step 1: Convert int[] to IntStream
+                .boxed() // Step 2: Convert IntStream to Stream<Integer> (required for collections)
+                // Step 3: Group elements by their value and count occurrences
+                // - Function.identity() means "group by the element itself" (x -> x)
+                // - Collectors.counting() counts how many elements are in each group
+                // - Result: Map<Integer, Long> where key=number, value=occurrence count
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
-                .entrySet().stream() // Convert map to stream of entries
-                .sorted(Map.Entry.comparingByKey()) // Sort by number (key)
+                .entrySet().stream() // Step 4: Convert Map to Stream<Map.Entry<Integer, Long>>
+                .sorted(Map.Entry.comparingByKey()) // Step 5: Sort entries by key (number) in ascending order
+                // Step 6: Print each entry in "Number X appears Y time(s)" format
                 .forEach(e -> System.out.println("Number " + e.getKey()
                         + " appears " + e.getValue() + " time(s)"));
     }

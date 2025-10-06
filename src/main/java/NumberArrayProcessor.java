@@ -37,6 +37,9 @@ public class NumberArrayProcessor {
         // sort by key, print results
         Arrays.stream(numbers) // Create stream from array
                 .boxed() // Convert int to Integer for collections
+                // Group elements by their value (Function.identity()) and count occurrences in
+                // each group
+                // Result: Map<Integer, Long> where key=number, value=count
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet().stream() // Convert map to stream of entries
                 .sorted(Map.Entry.comparingByKey()) // Sort by number (key)
